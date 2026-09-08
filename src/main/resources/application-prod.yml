@@ -1,0 +1,25 @@
+# prod 환경 — 진입점 8000. /api/** -> 백엔드(8083), 그 외 -> 프론트엔드(3003).
+server:
+  port: 8000
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: backend-api-prod
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/**
+        - id: frontend-prod
+          uri: http://localhost:3003
+          predicates:
+            - Path=/**
+
+jwt:
+  # 백엔드 application-prod.yml의 JWT_SECRET_PROD와 반드시 동일한 값이어야 하며,
+  # 실제 운영 값은 반드시 환경변수로 주입한다(기본값 없음 — 실수로 빈 값 배포 방지 위해 기동 시 명시 필요).
+  secret: ${JWT_SECRET_PROD:}
+
+logging:
+  level:
+    root: INFO

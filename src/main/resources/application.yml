@@ -1,0 +1,16 @@
+# 3개 profile(plan/dev/prod) 공통 값. profile별 값은 application-{profile}.yml에서 오버라이드한다.
+# (docs/05-deployment/phase-1/environment-setup-plan.md "게이트웨이" 절)
+spring:
+  application:
+    name: puron-gateway
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: 2000
+        response-timeout: 5s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

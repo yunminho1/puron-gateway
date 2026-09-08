@@ -1,0 +1,25 @@
+# plan 환경 — 진입점 8080. /api/** -> 백엔드(8081), 그 외 -> 프론트엔드(3001).
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: backend-api-plan
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/**
+        - id: frontend-plan
+          uri: http://localhost:3001
+          predicates:
+            - Path=/**
+
+jwt:
+  # 백엔드 application-plan.yml의 JWT_SECRET_PLAN과 반드시 동일한 값이어야
+  # 게이트웨이 자체 서명 검증(백엔드 호출 없이)이 성공한다.
+  secret: ${JWT_SECRET_PLAN:puron-local-plan-only-secret-change-me}
+
+logging:
+  level:
+    root: DEBUG

@@ -1,0 +1,25 @@
+# dev 환경 — 진입점 8090. /api/** -> 백엔드(8082), 그 외 -> 프론트엔드(3002).
+server:
+  port: 8090
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: backend-api-dev
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/**
+        - id: frontend-dev
+          uri: http://localhost:3002
+          predicates:
+            - Path=/**
+
+jwt:
+  # 백엔드 application-dev.yml의 JWT_SECRET_DEV와 반드시 동일한 값이어야
+  # 게이트웨이 자체 서명 검증(백엔드 호출 없이)이 성공한다.
+  secret: ${JWT_SECRET_DEV:puron-local-dev-only-secret-change-me}
+
+logging:
+  level:
+    root: DEBUG
